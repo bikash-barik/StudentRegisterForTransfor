@@ -17,76 +17,86 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bezkoder.springjwt.models.Company;
+import com.bezkoder.springjwt.models.Student;
 import com.bezkoder.springjwt.models.User;
-import com.bezkoder.springjwt.repository.CompanyRepository;
+import com.bezkoder.springjwt.repository.StudentRepository;
+
+
+
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/addcompany")
-public class CompanyController {
+@RequestMapping("/api/v1")
+public class StudentController {
 	
 	@Autowired
-	private CompanyRepository companyRepository;
+	private StudentRepository studentRepository;
+	
 
 	
 	
 	// get all company
-	@GetMapping("/companys")
+	@GetMapping("/students")
 	@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-	public List<Company> getAllCompanies(){
-		return companyRepository.findAll();	
-	}	
+	public List<Student> getAllStudents(){
+		return studentRepository.findAll();
+	}
 	
 	// create rest for add company/
-		@PostMapping("/companys")
+		
 		@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-		public Company createCompany(@RequestBody Company addCompany) {
-			return companyRepository.save(addCompany);
+		@PostMapping("/students")
+		public Student createStudent(@RequestBody Student student) {
+			return studentRepository.save(student);
 		}
 		
 		
 		// get company by id rest api
-		@GetMapping("/companys/{id}")
+		
 		@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-		public ResponseEntity<Company> getCompanyById(@PathVariable Integer id) {
-			Company company = companyRepository.findById(id)
+		@GetMapping("/students/{id}")
+		public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
+			Student student = studentRepository.findById(id)
 					.orElseThrow(() -> new RuntimeException("Student not exist with id :" + id));
-			return ResponseEntity.ok(company);
+			return ResponseEntity.ok(student);
 		}
 		
 		
 		// update company rest api
 		
-		@PutMapping("/companys/{id}")
+	
 		@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-		public ResponseEntity<Company> updateCompany(@PathVariable Integer id, @RequestBody Company companyDetails){
-			Company company = companyRepository.findById(id)
+		@PutMapping("/students/{id}")
+		public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student studentDetails){
+			Student student = studentRepository.findById(id)
 					.orElseThrow(() -> new RuntimeException("Student not exist with id :" + id));
 			
-			company.setComName(companyDetails.getComName());
-			company.setComAddress(companyDetails.getComAddress());
-			company.setComEmail(companyDetails.getComEmail());
-			company.setComDescription(companyDetails.getComDescription());
+			student.setName(studentDetails.getName());
+			student.setAddress(studentDetails.getAddress());
+			student.setEmailId(studentDetails.getEmailId());
+			student.setMobileNo(studentDetails.getMobileNo());
+			student.setParance_mobileNo(studentDetails.getParance_mobileNo());
+			student.setRegdNo(studentDetails.getRegdNo());
+			student.setPickUpAddress(studentDetails.getPickUpAddress());
+		
 			
-			
-			Company updatedCompany = companyRepository.save(company);
-			return ResponseEntity.ok(updatedCompany);
+			Student updatedStudent = studentRepository.save(student);
+			return ResponseEntity.ok(updatedStudent);
 		}
 	
 		
 		// delete company rest api
-		@DeleteMapping("/companys/{id}")
+	
 		@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-		public ResponseEntity<Map<String, Boolean>> deleteCompany(@PathVariable Integer id){
-			Company company = companyRepository.findById(id)
+		@DeleteMapping("/students/{id}")
+		public ResponseEntity<Map<String, Boolean>> deleteStudent(@PathVariable Long id){
+			Student student = studentRepository.findById(id)
 					.orElseThrow(() -> new RuntimeException("Student not exist with id :" + id));
 			
-			companyRepository.delete(company);
+			studentRepository.delete(student);
 			Map<String, Boolean> response = new HashMap<>();
 			response.put("deleted", Boolean.TRUE);
 			return ResponseEntity.ok(response);
 		}
-	
 
 }

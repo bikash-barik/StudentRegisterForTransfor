@@ -19,16 +19,33 @@ import lombok.ToString;
 @Data
 @ToString
 @Entity
-@Table(name = "company")
-public class Company {
+@Table(name = "students")
+public class Student {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private long id;
+	
+	@Column(name = "name")
+	private String name;
 
-	private String comName;
-	private String comAddress;
-	private String comEmail;
-	private String comDescription;
+		@Column(name = "address")
+	private String address;
+	
+	@Column(name = "email_id")
+	private String emailId;
+	
+	@Column(name = "mobile_no")
+	private String mobileNo;
+	
+	@Column(name = "parance_mobile_no")
+	private String parance_mobileNo;
+	
+	@Column(name = "regd_no")
+	private String regdNo;
+	
+	@Column(name = "pick_up_address")
+	private String pickUpAddress;
+
 	
 	
 }
