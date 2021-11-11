@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ public class BusDetailsController {
 	
 	//get
 		@GetMapping("/addrou")
+		@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 		public List<BusDetails> getAllRoute(){
 			return busDeatailsRepository.findAll();
 			
@@ -38,6 +40,7 @@ public class BusDetailsController {
 		
 		// create employee rest api
 		@PostMapping("/addrou")
+		@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 		public BusDetails createRoute(@RequestBody  BusDetails bus) {
 			return busDeatailsRepository.save(bus);
 			}
@@ -45,12 +48,14 @@ public class BusDetailsController {
 		
 		
 		@GetMapping("/addrou/{id}")
+		@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 		public ResponseEntity<BusDetails>getRouteById(@PathVariable Long id) {
 			BusDetails rou = busDeatailsRepository.findById(id)
 					.orElseThrow(() -> new RuntimeException("Id not exist with id :" + id));
 			return ResponseEntity.ok(rou);	}
 		// update rest api
 		@PutMapping("/addrou/{id}")
+		@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 		public ResponseEntity<BusDetails> updateRoute(@PathVariable Long id, @RequestBody BusDetails rouDetails){
 			BusDetails rou = busDeatailsRepository.findById(id)
 					.orElseThrow(() -> new RuntimeException("ID not exist with id :" + id));
@@ -66,6 +71,7 @@ public class BusDetailsController {
 		}
 		// Delete rest api
 		@DeleteMapping("/addrou/{id}")
+		@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 		public ResponseEntity<Map<String, Boolean>> deleteRoute(@PathVariable Long id){
 			BusDetails rou= busDeatailsRepository.findById(id)
 					.orElseThrow(() -> new RuntimeException("Id not exist with id :" + id));
