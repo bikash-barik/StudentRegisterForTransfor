@@ -44,7 +44,7 @@ public class StudentController {
 	
 	// create rest for add company/
 		
-		@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+		@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
 		@PostMapping("/students")
 		public Student createStudent(@RequestBody Student student) {
 			return studentRepository.save(student);
